@@ -9,11 +9,6 @@ interface user {
 }
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-  const [userObj, setUserObj] = useState<any>(null);
-  authService.onAuthStateChanged((user) => {
-    setUserObj(user);
-  });
-
   return (
     <>
       <LayOut>

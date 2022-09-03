@@ -13,12 +13,15 @@ interface props {
 
 const Layout: NextPage<props> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userObj, setUserObj] = useState<any>(null);
   const router = useRouter();
   const pathName = router.pathname;
+
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if (user) {
         setIsLoggedIn(true);
+        setUserObj(user);
       } else {
         setIsLoggedIn(false);
       }
@@ -27,7 +30,7 @@ const Layout: NextPage<props> = ({ children }) => {
 
   const pathSelection = () => {
     if (pathName === "/") {
-      return <Home />;
+      return <Home userObj={userObj} />;
     } else if (pathName === "/Profile") {
       return <Profile />;
     }
