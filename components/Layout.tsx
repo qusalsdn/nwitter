@@ -1,28 +1,42 @@
 import { NextPage } from "next";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { ReactElement, useEffect } from "react";
+import { ReactElement, useEffect, useState } from "react";
+import { authService } from "../src/fBase";
+import Home from "../pages/index";
+import Auth from "../pages/Auth";
+import NavBar from "./NavBar";
+import Profile from "../pages/Profile";
 
 interface props {
   children: ReactElement;
 }
 
 const Layout: NextPage<props> = ({ children }) => {
-  const { data: session } = useSession();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
-  // useEffect(() => {
-  //   if (!session) {
-  //     router.push("/Auth");
-  //   } else {
-  //     router.push("/");
-  //   }
-  // });
-  if (!session) {
-    router.push("/Auth");
-  }
+  const pathName = router.pathname;
+  useEffect(() => {
+    authService.onAuthStateChanged((user) => {
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    });
+  }, []);
+
+  const pathSelection = () => {
+    if (pathName === "/") {
+      return <Home />;
+    } else if (pathName === "/Profile") {
+      return <Profile />;
+    }
+  };
+
   return (
     <>
-      <div>{children}</div>
+      {isLoggedIn && <NavBar />}
+      {isLoggedIn ? pathSelection() : <Auth />}
     </>
   );
 };

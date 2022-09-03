@@ -1,22 +1,30 @@
 import { NextPage } from "next";
-import { useSession, signIn, signOut } from "next-auth/react";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { authService, firebaseInstance } from "../src/fBase";
 
 const Auth: NextPage = () => {
-  const { data: session } = useSession();
-  const router = useRouter();
-  useEffect(() => {
-    if (session) {
-      router.push("/");
+  const onSocialClick = async (event: any) => {
+    const {
+      target: { name },
+    } = event;
+    let provider: any;
+    if (name === "google") {
+      provider = new firebaseInstance.auth.GoogleAuthProvider();
+    } else if (name === "github") {
+      provider = new firebaseInstance.auth.GithubAuthProvider();
     }
-  }, []);
+    const data = await authService.signInWithPopup(provider);
+    console.log(data);
+  };
 
   return (
     <>
       <div>
-        <button onClick={() => signIn("google", { callbackUrl: "/" })}>Continue with Google</button>
-        <button onClick={() => signIn("github", { callbackUrl: "/" })}>Continue with Github</button>
+        <button name="google" onClick={onSocialClick}>
+          Continue with Google
+        </button>
+        <button name="github" onClick={onSocialClick}>
+          Continue with Github
+        </button>
       </div>
     </>
   );

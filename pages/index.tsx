@@ -1,17 +1,18 @@
 import type { NextPage } from "next";
-import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { dbService } from "../src/fBase";
 
 const Home: NextPage = () => {
-  const { data: session } = useSession();
-  const router = useRouter();
   const [nweet, setNweet] = useState("");
   const [nweets, setNweets] = useState<any[]>([]);
+
+  useEffect(() => {
+    getNweets();
+  }, []);
+
   const getNweets = async () => {
     const dbNweets = await dbService.collection("nweets").get();
-    let count = 0;
     dbNweets.forEach((document) => {
       const nweetObject = {
         ...document.data(),
@@ -20,23 +21,13 @@ const Home: NextPage = () => {
       // useState에 값을 전달할 때 함수를 전달하면 리액트는 이전 값에 접근할 수 있다.
       setNweets((prev) => [nweetObject, ...prev]);
       // 위의 문법은 nweetObject를 배열 첫 번째에 배치하고 나머지 모든 prev는 뒤에 붙힌다.
-      count++;
-      console.log(count);
-      console.log(nweets);
     });
   };
-
-  useEffect(() => {
-    if (!session) {
-      router.push("/Auth");
-    }
-    getNweets();
-  }, []);
 
   const onSubmit = async (event: any) => {
     event.preventDefault();
     await dbService.collection("nweets").add({
-      nweet,
+      text: nweet,
       createAt: Date.now(),
     });
     setNweet("");
@@ -62,7 +53,7 @@ const Home: NextPage = () => {
           return (
             <>
               <div key={nweet.id}>
-                <h4>{nweet.nweet}</h4>
+                <h4>{nweet.text}</h4>
               </div>
             </>
           );

@@ -1,21 +1,18 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { authService } from "../src/fBase";
 
 const Profile: NextPage = () => {
-  const { data: session } = useSession();
   const router = useRouter();
-  useEffect(() => {
-    if (!session) {
-      router.push("/Auth");
-    }
-  }, []);
+
+  const onLogOutClick = () => {
+    authService.signOut();
+    router.push("/");
+  };
 
   return (
     <>
-      <span>Profile</span>
-      <button onClick={() => signOut({ callbackUrl: "/Auth" })}>LogOut</button>
+      <button onClick={onLogOutClick}>LogOut</button>
     </>
   );
 };

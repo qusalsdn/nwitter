@@ -1,12 +1,7 @@
 import { NextPage } from "next";
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
 
 const NavBar: NextPage = () => {
-  const { data: session } = useSession();
-  if (!session) {
-    return <></>;
-  }
   return (
     <nav>
       <ul>

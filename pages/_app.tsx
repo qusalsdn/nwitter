@@ -1,15 +1,24 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { SessionProvider } from "next-auth/react";
-import NavBar from "../components/NavBar";
+import LayOut from "../components/Layout";
+import { useState } from "react";
+import { authService } from "../src/fBase";
+
+interface user {
+  userObj: any;
+}
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+  const [userObj, setUserObj] = useState<any>(null);
+  authService.onAuthStateChanged((user) => {
+    setUserObj(user);
+  });
+
   return (
     <>
-      <SessionProvider session={session}>
-        <NavBar />
+      <LayOut>
         <Component {...pageProps} />
-      </SessionProvider>
+      </LayOut>
       <footer>&copy; {new Date().getFullYear()} Nwitter</footer>
     </>
   );
