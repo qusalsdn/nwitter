@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import { NextPage } from "next";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -11,7 +10,7 @@ const Auth: NextPage = () => {
     if (session) {
       router.push("/");
     }
-  });
+  }, []);
 
   return (
     <>

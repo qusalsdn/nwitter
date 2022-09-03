@@ -10,7 +10,7 @@ const Profile: NextPage = () => {
     if (!session) {
       router.push("/Auth");
     }
-  });
+  }, []);
 
   return (
     <>
