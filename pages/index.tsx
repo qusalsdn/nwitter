@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import { ReactElement, useEffect, useState } from "react";
+import Nweet from "../components/Nweet";
 import { dbService } from "../src/fBase";
 
 interface userObj {
@@ -61,13 +62,7 @@ const Home: NextPage<userObj> = ({ userObj }) => {
       </div>
       <div>
         {nweets.map((nweet) => {
-          return (
-            <>
-              <div key={nweet.id}>
-                <h4>{nweet.text}</h4>
-              </div>
-            </>
-          );
+          return <Nweet key={nweet.id} nweetObj={nweet} isOwner={nweet.creatorId === userObj.uid} />;
         })}
       </div>
     </>
