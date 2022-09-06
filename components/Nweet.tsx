@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import { useState } from "react";
-import { dbService } from "../src/fBase";
+import { dbService, storageService } from "../src/fBase";
+import Image from "next/image";
 
 interface nweetObj {
   nweetObj: any;
@@ -15,6 +16,9 @@ const Nweet: NextPage<nweetObj> = ({ nweetObj, isOwner }) => {
     const ok = window.confirm("정말 이 트윗을 삭제하시겠습니까?");
     if (ok) {
       await dbService.doc(`nweets/${nweetObj.id}`).delete();
+      if (nweetObj.attachmentUrl) {
+        await storageService.refFromURL(nweetObj.attachmentUrl).delete();
+      }
     }
   };
 
@@ -48,6 +52,7 @@ const Nweet: NextPage<nweetObj> = ({ nweetObj, isOwner }) => {
       ) : (
         <>
           <h4>{nweetObj.text}</h4>
+          {nweetObj.attachmentUrl && <Image src={nweetObj.attachmentUrl} alt="" width="100px" height="100px" />}
           {isOwner && (
             <>
               <button onClick={onDeleteClick}>Delete Nweet</button>
