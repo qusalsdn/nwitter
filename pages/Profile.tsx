@@ -1,18 +1,16 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
-import { authService, dbService, storageService } from "../src/fBase";
-import Image from "next/image";
-import { v4 as uuidv4 } from "uuid";
+import { useEffect, useState } from "react";
+import { authService, dbService } from "../src/fBase";
 
 interface propsType {
   userObj: any;
+  refreshUser: Function;
 }
 
-const Profile: NextPage<propsType> = ({ userObj }) => {
+const Profile: NextPage<propsType> = ({ refreshUser, userObj }) => {
   const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
   const router = useRouter();
-  const fileInput: any = useRef();
 
   useEffect(() => {
     getMyNweets();
@@ -34,6 +32,7 @@ const Profile: NextPage<propsType> = ({ userObj }) => {
         displayName: newDisplayName,
       });
     }
+    refreshUser();
   };
 
   const onLogOutClick = () => {

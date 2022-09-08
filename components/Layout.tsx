@@ -21,18 +21,31 @@ const Layout: NextPage<props> = ({ children }) => {
     authService.onAuthStateChanged((user) => {
       if (user) {
         setIsLoggedIn(true);
-        setUserObj(user);
+        setUserObj({
+          displayName: user.displayName,
+          uid: user.uid,
+          updateProfile: (args: any) => user.updateProfile(args),
+        });
       } else {
         setIsLoggedIn(false);
       }
     });
   }, []);
 
+  const refreshUser = () => {
+    const user: any = authService.currentUser;
+    setUserObj({
+      displayName: user.displayName,
+      uid: user.uid,
+      updateProfile: (args: object) => user.updateProfile(args),
+    });
+  };
+
   const pathSelection = () => {
     if (pathName === "/") {
       return <Home userObj={userObj} />;
     } else if (pathName === "/Profile") {
-      return <Profile userObj={userObj} />;
+      return <Profile refreshUser={refreshUser} userObj={userObj} />;
     }
   };
 
