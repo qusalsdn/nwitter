@@ -32,7 +32,7 @@ const Layout: NextPage<props> = ({ children }) => {
     if (pathName === "/") {
       return <Home userObj={userObj} />;
     } else if (pathName === "/Profile") {
-      return <Profile />;
+      return <Profile userObj={userObj} />;
     }
   };
 
