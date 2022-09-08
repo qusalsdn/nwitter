@@ -3,12 +3,12 @@ import { useState } from "react";
 import { dbService, storageService } from "../src/fBase";
 import Image from "next/image";
 
-interface nweetObj {
+interface propsType {
   nweetObj: any;
   isOwner: boolean;
 }
 
-const Nweet: NextPage<nweetObj> = ({ nweetObj, isOwner }) => {
+const Nweet: NextPage<propsType> = ({ nweetObj, isOwner }) => {
   const [editing, setEditing] = useState(false);
   const [newNweet, setNewNweet] = useState(nweetObj.text);
 
@@ -44,7 +44,13 @@ const Nweet: NextPage<nweetObj> = ({ nweetObj, isOwner }) => {
       {editing ? (
         <>
           <form onSubmit={onSubmit}>
-            <input type="text" placeholder="수정할 트윗을 입력하세요." value={newNweet} required onChange={onChange} />
+            <input
+              type="text"
+              placeholder="수정할 트윗을 입력하세요."
+              value={newNweet}
+              required
+              onChange={onChange}
+            />
             <input type="submit" value="Update Nweet" />
           </form>
           <button onClick={toggleEditing}>Cancel</button>
@@ -52,7 +58,9 @@ const Nweet: NextPage<nweetObj> = ({ nweetObj, isOwner }) => {
       ) : (
         <>
           <h4>{nweetObj.text}</h4>
-          {nweetObj.attachmentUrl && <Image src={nweetObj.attachmentUrl} alt="" width="100px" height="100px" />}
+          {nweetObj.attachmentUrl && (
+            <Image src={nweetObj.attachmentUrl} alt="" width="100px" height="100px" />
+          )}
           {isOwner && (
             <>
               <button onClick={onDeleteClick}>Delete Nweet</button>

@@ -5,11 +5,11 @@ import Nweet from "../components/Nweet";
 import { dbService, storageService } from "../src/fBase";
 import { v4 as uuidv4 } from "uuid";
 
-interface userObj {
+interface propsType {
   userObj: any;
 }
 
-const Home: NextPage<userObj> = ({ userObj }) => {
+const Home: NextPage<propsType> = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
   const [nweets, setNweets] = useState<any[]>([]);
   const [attachment, setAttachment] = useState("");
@@ -90,7 +90,13 @@ const Home: NextPage<userObj> = ({ userObj }) => {
     <>
       <div>
         <form onSubmit={onSubmit}>
-          <input value={nweet} onChange={onChange} type="text" placeholder="무슨 생각을 하고 있니?" maxLength={120} />
+          <input
+            value={nweet}
+            onChange={onChange}
+            type="text"
+            placeholder="무슨 생각을 하고 있니?"
+            maxLength={120}
+          />
           <input type="file" accept="image/*" onChange={onFileChange} ref={fileInput} />
           <input type="submit" value="Nweet" />
           {attachment && (

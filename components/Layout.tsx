@@ -38,7 +38,7 @@ const Layout: NextPage<props> = ({ children }) => {
 
   return (
     <>
-      {isLoggedIn && <NavBar />}
+      {isLoggedIn && <NavBar userObj={userObj} />}
       {isLoggedIn ? pathSelection() : <Auth />}
     </>
   );

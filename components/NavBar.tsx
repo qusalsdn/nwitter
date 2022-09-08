@@ -1,7 +1,11 @@
 import { NextPage } from "next";
 import Link from "next/link";
 
-const NavBar: NextPage = () => {
+interface propsType {
+  userObj: any;
+}
+
+const NavBar: NextPage<propsType> = ({ userObj }) => {
   return (
     <nav>
       <ul>
@@ -12,7 +16,7 @@ const NavBar: NextPage = () => {
         </li>
         <li>
           <Link href={"/Profile"}>
-            <a>My Profile</a>
+            <a>{userObj.displayName}의 Profile</a>
           </Link>
         </li>
       </ul>
