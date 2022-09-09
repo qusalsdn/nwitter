@@ -28,6 +28,7 @@ const Layout: NextPage<props> = ({ children }) => {
         });
       } else {
         setIsLoggedIn(false);
+        setUserObj(null);
       }
     });
   }, []);
