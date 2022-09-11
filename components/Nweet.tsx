@@ -1,7 +1,8 @@
 import { NextPage } from "next";
 import { useState } from "react";
 import { dbService, storageService } from "../src/fBase";
-import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
 interface propsType {
   nweetObj: any;
@@ -40,32 +41,38 @@ const Nweet: NextPage<propsType> = ({ nweetObj, isOwner }) => {
   };
 
   return (
-    <div key={nweetObj.id}>
+    <div className="nweet">
       {editing ? (
         <>
-          <form onSubmit={onSubmit}>
+          <form onSubmit={onSubmit} className="nweetEdit">
             <input
               type="text"
               placeholder="수정할 트윗을 입력하세요."
               value={newNweet}
               required
               onChange={onChange}
+              autoFocus
+              className="formInput"
             />
-            <input type="submit" value="Update Nweet" />
+            <input type="submit" value="Update Nweet" className="formBtn" />
           </form>
-          <button onClick={toggleEditing}>Cancel</button>
+          <span onClick={toggleEditing} className="formBtn cancelBtn">
+            Cancel
+          </span>
         </>
       ) : (
         <>
           <h4>{nweetObj.text}</h4>
-          {nweetObj.attachmentUrl && (
-            <Image src={nweetObj.attachmentUrl} alt="" width="100px" height="100px" />
-          )}
+          {nweetObj.attachmentUrl && <img src={nweetObj.attachmentUrl} alt="image" />}
           {isOwner && (
-            <>
-              <button onClick={onDeleteClick}>Delete Nweet</button>
-              <button onClick={toggleEditing}>Edit Nweet</button>
-            </>
+            <div className="nweet__actions">
+              <span onClick={onDeleteClick}>
+                <FontAwesomeIcon icon={faTrash} />
+              </span>
+              <span onClick={toggleEditing}>
+                <FontAwesomeIcon icon={faPencilAlt} />
+              </span>
+            </div>
           )}
         </>
       )}

@@ -37,10 +37,10 @@ const Home: NextPage<propsType> = ({ userObj }) => {
 
   return (
     <>
-      <div>
+      <div className="container">
         <NweetFactory userObj={userObj} />
       </div>
-      <div>
+      <div style={{ marginTop: 30 }}>
         {nweets.map((nweet) => {
           return <Nweet key={nweet.id} nweetObj={nweet} isOwner={nweet.creatorId === userObj.uid} />;
         })}
