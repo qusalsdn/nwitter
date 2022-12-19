@@ -12,6 +12,7 @@ interface props {
 }
 
 const Layout: NextPage<props> = ({ children }) => {
+  const [init, setInit] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userObj, setUserObj] = useState<any>(null);
   const router = useRouter();
@@ -26,9 +27,11 @@ const Layout: NextPage<props> = ({ children }) => {
           uid: user.uid,
           updateProfile: (args: any) => user.updateProfile(args),
         });
+        setInit(true);
       } else {
         setIsLoggedIn(false);
         setUserObj(null);
+        setInit(true);
       }
     });
   }, []);
@@ -49,6 +52,14 @@ const Layout: NextPage<props> = ({ children }) => {
       return <Profile refreshUser={refreshUser} userObj={userObj} />;
     }
   };
+
+  if (!init) {
+    return (
+      <div style={{ width: "100vw", height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <h1 style={{ fontSize: "50px" }}>Loading...😜</h1>
+      </div>
+    );
+  }
 
   return (
     <>
